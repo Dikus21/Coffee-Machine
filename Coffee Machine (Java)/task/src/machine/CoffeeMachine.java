@@ -7,7 +7,7 @@ public class CoffeeMachine {
         Scanner sc = new Scanner(System.in);
         MachineCommand machine = new MachineCommand(400, 540, 120 , 9, 550);
         while(machine.Online()){
-            machine.Menu(sc.nextLine());
+            machine.menu(sc.nextLine());
         }
     }
 }
