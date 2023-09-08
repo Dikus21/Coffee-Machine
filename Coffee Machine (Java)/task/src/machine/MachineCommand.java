@@ -30,43 +30,56 @@ public class MachineCommand {
 
     public void menu(String input) {
         switch (state) {
-            case STANDBY -> {
+            case STANDBY:
                 setState(input);
-            }
-            case BUY -> {
+                break;
+            case BUY:
                 buy(input);
-            }
-            case REFILLING -> {
-                if (NumberChecker(input)) {
+                break;
+            case REFILLING:
+                if (numberChecker(input)) {
                     fill(input);
                 }
                 switch (refill) {
-                    case REFILLING_MILK -> System.out.println("Write how many ml of milk you want to add:");
-                    case REFILLING_COFFEE ->
-                            System.out.println("Write how many grams of coffee beans you want to add:");
-                    case REFILLING_CUPS -> System.out.println("Write how many disposable cups you want to add:");
-                    default -> {
-                    }
+                    case REFILLING_MILK:
+                        System.out.println("Write how many ml of milk you want to add:");
+                        break;
+                    case REFILLING_COFFEE:
+                        System.out.println("Write how many grams of coffee beans you want to add:");
+                        break;
+                    case REFILLING_CUPS:
+                        System.out.println("Write how many disposable cups you want to add:");
+                        break;
+                    default:
+                        break;
                 }
-            }
+                break;
         }
     }
 
     public void setState(String input) {
         switch (input) {
-            case "buy" -> {
+            case "buy":
                 System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
                 state = MachineState.BUY;
-            }
-            case "fill" -> {
+                break;
+            case "fill":
                 state = MachineState.REFILLING;
                 refill = MachineState.REFILLING_WATER;
                 System.out.println("Write how many ml of water you want to add:");
-            }
-            case "take" -> take();
-            case "remaining" -> storageStatus();
-            case "exit" -> state = MachineState.OFF;
-            default -> System.out.println("Unrecognized Input!");
+                break;
+            case "take":
+                take();
+                break;
+            case "remaining":
+                storageStatus();
+                break;
+            case "exit":
+                state = MachineState.OFF;
+                break;
+            default:
+                System.out.println("Unrecognized Input!");
+                break;
         }
     }
 
@@ -93,17 +106,21 @@ public class MachineCommand {
     public void buy(String code) {
         Beverage coffeeType;
         switch (code) {
-            case "1" -> coffeeType = Beverage.ESPRESSO;
-            case "2" -> coffeeType = Beverage.LATTE;
-            case "3" -> coffeeType = Beverage.CAPPUCCINO;
-            case "back" -> {
+            case "1":
+                coffeeType = Beverage.ESPRESSO;
+                break;
+            case "2":
+                coffeeType = Beverage.LATTE;
+                break;
+            case "3":
+                coffeeType = Beverage.CAPPUCCINO;
+                break;
+            case "back":
                 initiate();
                 return;
-            }
-            default -> {
+            default:
                 System.out.println("Unrecognized Input!");
                 return;
-            }
         }
         int waterRemain = water - coffeeType.getWater();
         int milkRemain = milk - coffeeType.getMilk();
@@ -130,23 +147,23 @@ public class MachineCommand {
 
     public void fill(String input) {
         switch (refill) {
-            case REFILLING_WATER -> {
+            case REFILLING_WATER:
                 water += Integer.parseInt(input);
                 refill = MachineState.REFILLING_MILK;
-            }
-            case REFILLING_MILK -> {
+                break;
+            case REFILLING_MILK:
                 milk += Integer.parseInt(input);
                 refill = MachineState.REFILLING_COFFEE;
-            }
-            case REFILLING_COFFEE -> {
+                break;
+            case REFILLING_COFFEE:
                 beans += Integer.parseInt(input);
                 refill = MachineState.REFILLING_CUPS;
-            }
-            case REFILLING_CUPS -> {
+                break;
+            case REFILLING_CUPS:
                 cups += Integer.parseInt(input);
                 refill = MachineState.STANDBY;
                 initiate();
-            }
+                break;
         }
     }
 
