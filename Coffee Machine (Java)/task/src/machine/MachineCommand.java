@@ -16,29 +16,29 @@ public class MachineCommand {
         this.cups = cups;
         this.money = money;
 
-        Initiate();
+        initiate();
     }
 
     public boolean Online() {
         return state != MachineState.OFF;
     }
 
-    public void Initiate() {
+    public void initiate() {
         System.out.println("Write action (buy, fill, take, remaining, exit):");
         state = MachineState.STANDBY;
     }
 
-    public void Menu(String input) {
+    public void menu(String input) {
         switch (state) {
             case STANDBY -> {
-                SetState(input);
+                setState(input);
             }
             case BUY -> {
-                Buy(input);
+                buy(input);
             }
             case REFILLING -> {
                 if (NumberChecker(input)) {
-                    Fill(input);
+                    fill(input);
                 }
                 switch (refill) {
                     case REFILLING_MILK -> System.out.println("Write how many ml of milk you want to add:");
@@ -52,7 +52,7 @@ public class MachineCommand {
         }
     }
 
-    public void SetState(String input) {
+    public void setState(String input) {
         switch (input) {
             case "buy" -> {
                 System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:");
@@ -63,14 +63,14 @@ public class MachineCommand {
                 refill = MachineState.REFILLING_WATER;
                 System.out.println("Write how many ml of water you want to add:");
             }
-            case "take" -> Take();
-            case "remaining" -> StorageStatus();
+            case "take" -> take();
+            case "remaining" -> storageStatus();
             case "exit" -> state = MachineState.OFF;
             default -> System.out.println("Unrecognized Input!");
         }
     }
 
-    public boolean NumberChecker(String number) {
+    public boolean numberChecker(String number) {
         try {
             Integer.parseInt(number);
             return true;
@@ -80,24 +80,24 @@ public class MachineCommand {
         }
     }
 
-    public void StorageStatus() {
+    public void storageStatus() {
         System.out.printf("The coffee machine has:%n" +
                 "%d ml of water%n" +
                 "%d ml of milk%n" +
                 "%d g of coffee beans%n" +
                 "%d disposable cups%n" +
                 "$%d of money%n", water, milk, beans, cups, money);
-        Initiate();
+        initiate();
     }
 
-    public void Buy(String code) {
+    public void buy(String code) {
         Beverage coffeeType;
         switch (code) {
             case "1" -> coffeeType = Beverage.ESPRESSO;
             case "2" -> coffeeType = Beverage.LATTE;
             case "3" -> coffeeType = Beverage.CAPPUCCINO;
             case "back" -> {
-                Initiate();
+                initiate();
                 return;
             }
             default -> {
@@ -125,10 +125,10 @@ public class MachineCommand {
             cups = cupsRemain;
             money += coffeeType.getPrice();
         }
-        Initiate();
+        initiate();
     }
 
-    public void Fill(String input) {
+    public void fill(String input) {
         switch (refill) {
             case REFILLING_WATER -> {
                 water += Integer.parseInt(input);
@@ -145,18 +145,18 @@ public class MachineCommand {
             case REFILLING_CUPS -> {
                 cups += Integer.parseInt(input);
                 refill = MachineState.STANDBY;
-                Initiate();
+                initiate();
             }
         }
     }
 
-    public void Take() {
+    public void take() {
         if (money == 0) {
             System.out.println("No Money Left");
         } else {
             System.out.printf("I gave you $%d%n", money);
             money -= money;
         }
-        Initiate();
+        initiate();
     }
 }
